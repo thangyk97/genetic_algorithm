@@ -11,10 +11,10 @@ class Population(object):
         for i in range(size_of_population):
             self.individuals.append(Individual(num_city))
 
-    def calculate_fitness(self):
+    def calculate_fitness(self, distances):
         """Calculate fitness of each individual"""
         for indiv in self.individuals:
-            _ = indiv.get_fitness()
+            _ = indiv.get_fitness(distances)
 
     def get_least_fittest_index(self):
         min_fitness = float('-inf')
@@ -27,3 +27,9 @@ class Population(object):
 
     def rank_individuals(self):
         self.individuals = sorted(self.individuals, key=lambda x: x.fitness, reverse=True)
+
+    def get_tot_fitness(self):
+        tot_fitness = 0.0
+        for i in self.individuals:
+            tot_fitness += i.fitness
+        return tot_fitness
