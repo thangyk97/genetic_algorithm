@@ -69,7 +69,6 @@ class GeneticAl4TSP(object):
             _ = indiv.get_fitness(self.distances)
         self.population.individuals = self.population.individuals + self.parents
 
-
         # remove least fitness individual
         self.population.rank_individuals()
         self.population.individuals = self.population.individuals[:self.size_of_population]
@@ -85,7 +84,7 @@ class GeneticAl4TSP(object):
 
     def evolution(self):
         it = 0
-        while it < 10:
+        while it < 1000:
             print("Generation " + str(it))
             self.select_parents()
             self.crossover()
@@ -103,7 +102,7 @@ def cal_distance_matrix_from_coordinate(coord):
 
 def main():
     # Load data
-    coord = np.loadtxt('ch150.txt')
+    coord = np.loadtxt('ch130.txt')
     distances = cal_distance_matrix_from_coordinate(coord)
 
     # Calculate and get min result after N running times
