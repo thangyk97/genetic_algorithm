@@ -15,30 +15,34 @@ class Population(object):
         for _ in range(self.size_of_population):
             self.individuals.append(Individual(self.num_city))
 
-    def calculate_fitness(self, distances_matrix):
+    def calculate_routes_distances(self, distances_matrix):
         """Calculate fitness of each individual"""
         for indiv in self.individuals:
-            _ = indiv.get_fitness(distances_matrix)
+            _ = indiv.get_routes_distances(distances_matrix)
         self.num_task = len(distances_matrix)
 
-    def calculate_skill_factor(self):
+    def calculate_scalar_fitness_and_skill_factor(self):
         # Rank with each task
         for i in range(self.num_task):
-            self.individuals = sorted(self.individuals, key=lambda x: x.fitness[i], reverse=True)
+            self.individuals = sorted(self.individuals, key=lambda x: x.distances[i], reverse=False)
             for idx, idv in enumerate( self.individuals ):
-                idv.rank[i] = idx
-        # Calculate skill factor
-        max_idv_per_task = self.size_of_population // self.num_task
-        count_idv = [0 for _ in range(self.num_task)]
+                idv.rank[i] = idx + 1
+        # Calculate scalar-fitness and skill factor
         for idv in self.individuals:
-            for _ in range(self.num_task):
-                skill_factor = np.argmin(idv.rank)
-                if count_idv[skill_factor] < max_idv_per_task:
-                    idv.skill_factor = skill_factor
-                    count_idv[skill_factor] += 1
-                    break
-                else: 
-                    idv.rank[skill_factor] = float('inf')
+            idv.scalar_fitness = 1 / min(idv.rank)
+            idv.skill_factor   = np.argmin(idv.rank)
+
+        # max_idv_per_task = self.size_of_population // self.num_task
+        # count_idv = [0 for _ in range(self.num_task)]
+        # for idv in self.individuals:
+        #     for _ in range(self.num_task):
+        #         skill_factor = np.argmin(idv.rank)
+        #         if count_idv[skill_factor] < max_idv_per_task:
+        #             idv.skill_factor = skill_factor
+        #             count_idv[skill_factor] += 1
+        #             break
+        #         else: 
+        #             idv.rank[skill_factor] = float('inf')
 
 
 

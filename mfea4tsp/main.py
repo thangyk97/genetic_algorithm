@@ -20,12 +20,12 @@ def load_data(file_names, path):
     return distances
 
 def main():
-    file_names = ['ch130.txt', 'a280.txt']
+    file_names = ['ch130.txt', 'a280.txt', 'berlin52.txt']
     path = '/home/thangnd/git/python_workspace/geneticalgorithms/datatsp/'
 
     distances = load_data(file_names, path)
     s = mfea4tsp(distances, 100)
-    r = s.solve(10)
+    r = s.solve(100)
     
     for i, f in enumerate(file_names):
         print("Min distance for " + f + ": ", r[i])

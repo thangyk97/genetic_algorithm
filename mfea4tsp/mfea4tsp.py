@@ -7,12 +7,12 @@ class mfea4tsp(object):
     
     def __init__(self, distances_matrix, size_of_population):
         super(mfea4tsp, self).__init__()
-        self.distances_matrix = distances_matrix
-        self.num_task = len(distances_matrix)
+        self.distances_matrix   = distances_matrix
+        self.num_task           = len(distances_matrix)
         self.size_of_population = size_of_population
-        self.offspring = []
-        self.Rmp = 0.2
-        self.Rm = 0.01
+        self.offspring          = []
+        self.Rmp                = 0.2
+        self.Rm                 = 0.01
 
     def generate_population(self):
         num_city = 0
@@ -22,10 +22,10 @@ class mfea4tsp(object):
         self.population.generate_rd_population()
 
     def evaluate_population(self):
-        self.population.calculate_fitness(self.distances_matrix)
+        self.population.calculate_routes_distances(self.distances_matrix)
 
     def cal_skill_factor(self):
-        self.population.calculate_skill_factor()
+        self.population.calculate_scalar_fitness_and_skill_factor()
 
     def crossover(self):
         pairs = np.random.permutation(self.size_of_population)
@@ -80,32 +80,26 @@ class mfea4tsp(object):
 
     def evaluate_offspring(self):
         for idv in self.offspring:
-            _ = idv.get_fitness(self.distances_matrix)
+            _ = idv.get_routes_distances_4_specific_task(self.distances_matrix, idv.skill_factor)
+    
+    def re_cal_scalar_fitness(self):
+        for i in range(self.num_task):
+            temp = [idv for idv in self.population.individuals if idv.skill_factor == i]
+            temp = sorted(temp, key=lambda x: x.distances[i], reverse=False)
+            for idx, idv in enumerate(temp):
+                idv.rank[i] = idx + 1
+                idv.scalar_fitness = 1 / (idx + 1)
+                
 
     def selection(self):
-        output = []
-        idvs_of_task = [[] for _ in range(self.num_task)]
-        for idv in self.population.individuals:
-            idvs_of_task[idv.skill_factor].append(idv)
-        
-        max_idv_per_task = self.size_of_population // self.num_task
-
-        self.population.individuals = []
-        for i, idvs in enumerate( idvs_of_task ):
-
-            idvs = sorted(idvs, key=lambda x: x.fitness[i], reverse=True)
-            output.append(idvs[0])
-            self.population.individuals += idvs[:max_idv_per_task]
-        return output
+        self.population.individuals = sorted(self.population.individuals, key=lambda x: x.scalar_fitness, reverse=True)
+        self.population.individuals = self.population.individuals[:self.size_of_population]
 
     def solve(self, max_it):
         it = 0
         self.generate_population()
         self.evaluate_population()
         self.cal_skill_factor()
-        for idv in self.population.individuals:
-            if idv.skill_factor is None:
-                print('dm')
 
         while it < max_it:
             print("it : ", it, ", population size = ", len(self.population.individuals))
@@ -117,7 +111,16 @@ class mfea4tsp(object):
             # Concate current population and off-springs
             self.population.individuals = self.population.individuals + self.offspring
             # Selection individual to survive
-            output = self.selection()
+            self.re_cal_scalar_fitness()
+            self.selection()
 
             it += 1
+        
+        output = [0 for _ in range(self.num_task)]
+        for i in range(self.num_task):
+            for idv in self.population.individuals:
+                if idv.skill_factor == i:
+                    output[i] = idv
+                    break
+
         return [indv.distances[indv.skill_factor] for indv in output]

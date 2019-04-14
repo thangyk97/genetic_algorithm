@@ -102,7 +102,8 @@ def cal_distance_matrix_from_coordinate(coord):
 
 def main():
     # Load data
-    coord = np.loadtxt('ch130.txt')
+    path = '/home/thangnd/git/python_workspace/geneticalgorithms/datatsp/'
+    coord = np.loadtxt(path + 'ch130.txt')
     distances = cal_distance_matrix_from_coordinate(coord)
 
     # Calculate and get min result after N running times
