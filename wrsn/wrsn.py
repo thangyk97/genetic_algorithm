@@ -68,13 +68,16 @@ class WRSN(object):
         p = 1
         q = 5
 
-        cycle_a = individual_a.cycle[q+1:-1] + individual_a.cycle[1:q+1]
-        cycle_b = individual_b.cycle[q+1:-1] + individual_b.cycle[1:q+1]
-        interval_a = individual_a.cycle_a[p: q+1]
-        interval_b = individual_b.cycle_b[p: q+1]
+        cycle_a = individual_a.cycle[q+1:] + individual_a.cycle[0:q+1]
+        cycle_b = individual_b.cycle[q+1:] + individual_b.cycle[0:q+1]
+        interval_a = individual_a.cycle[p: q+1]
+        interval_b = individual_b.cycle[p: q+1]
         for i in range(q-p+1):
-            cycle_a.remove(interval_b[i])
-            cycle_b.remove(interval_a[i])
+            try :
+                cycle_a.remove(interval_b[i])
+                cycle_b.remove(interval_a[i])
+            except ValueError:
+                pass
 
         children_a = Individual(num_sensor=self.num_sensor,
                                 num_come_back=self.num_come_back,
@@ -122,19 +125,26 @@ class WRSN(object):
             if random.random() <= p_c:
                 child0, child1 = self.breed(indv0, indv1)
                 # Replace parent by children
-                self.population.individuals[pair_index[0]] = child0
-                self.population.individuals[pair_index[1]] = child1
+                if child0.is_satify_constraints(self.distances):
+                    self.population.individuals[pair_index[0]] = child0
+                if child1.is_satify_constraints(self.distances):
+                    self.population.individuals[pair_index[1]] = child1
 
-    def evolution(self):
+    def evolution(self, maxIter):
         it = 0
         m_obj = Mutation(self.c_1, self.c_2, self.population)
-        while it < 1000:
+        while it < maxIter:
             print("Generation " + str(it))
             self.selection()
             self.crossover(k1=0.5, k2=0.5)
             m_obj.mutation()
-            it += 1
 
+            it += 1
+    def solve(self, maxIter=100):
+        self.evolution(maxIter)
+        idx = self.population.get_highest_fitness_index()
+        best = self.population.individuals[idx]
+        print(best)
 
 class Mutation():
     def __init__(self, c_1, c_2, population):
@@ -169,10 +179,8 @@ class Mutation():
     def subtract_positions(self, position_1, position_2):
         """
         """
-            
         return [position_2[i] if position_1[i] != position_2[i] else 0 for i in range(len(position_2))]
         
-
     def multiply_c_and_speed(self, c, speed):
         """
         """
@@ -189,10 +197,11 @@ class Mutation():
         """
         for indv in self.population.individuals:
             A = self.multiply_c_and_speed(self.c_1,
-                                     self.subtract_positions(self.population.population_best_individual.cycle,
-                                                        indv.cycle))
+                            self.subtract_positions(self.population.population_best_individual.cycle,
+                                                    indv.cycle))
             B = self.multiply_c_and_speed(self.c_2,
-                                     self.subtract_positions(self.population.global_best_individual.cycle,
+                                self.subtract_positions(self.population.global_best_individual.cycle,
                                                         indv.cycle))
             V_r = self.add_speed_and_speed(A, B)
             indv.cycle = self.add_position_and_speed(indv.cycle, V_r)
+        print('mution done')

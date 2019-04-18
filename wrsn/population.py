@@ -5,6 +5,7 @@
 # @desc [description]
 
 from individual import Individual
+import sys
 
 class Population(object):
     """
@@ -38,14 +39,17 @@ class Population(object):
         self.individuals = []
         it = 0
         while it < size_of_population:
-            new_individuals = Individual(num_sensor, num_come_back, self.data, self.sensor_info)
+            new_individuals = Individual(num_sensor=num_sensor, 
+                                        num_come_back=num_come_back,
+                                        data=self.data,
+                                        sensor_info=self.sensor_info)
             if new_individuals.is_satify_constraints(distances):
                 self.individuals.append(new_individuals)
                 it += 1
                 print(it)
 
         highest_index = self.get_highest_fitness_index()
-        self.population_best_individula = self.individuals[highest_index]
+        self.population_best_individual = self.individuals[highest_index]
         self.global_best_individual = self.individuals[highest_index]
 
         print("Initial population success !")

@@ -5,6 +5,7 @@
 # @desc [description]
 
 import numpy as np
+import sys
 
 class Individual(object):
     """
@@ -76,10 +77,12 @@ class Individual(object):
         self.cal_T()
         self.cal_cycle_distance(distances)
         self.cal_to_i()
+
         self.get_fitness()
         temp = self.is_car_out_of_energy(distances, self.data['PM'],
                                                         self.data['v'], self.data['EM'])
-        if self.fitness < 0 and temp:
+
+        if self.fitness > 0 and not temp:
             return True
         else:
             return False
@@ -100,22 +103,21 @@ class Individual(object):
         to next time come to one
         Return True if car is out of energy, False if not
         """
+
         cycle_full = [0] + self.cycle + [0]
         service_station_index = [i for i, v in enumerate(cycle_full) if v == 0]
-        print(service_station_index)
         # Loop per each part cycle, if car is out of energy in the part cycle, return True
         for i in range(len(service_station_index)-1):
-            temp = cycle_full[service_station_index[i], service_station_index[i+1]]
+            temp = cycle_full[service_station_index[i]: service_station_index[i+1]]
             part_cycle_distance = 0.0
             # Calculate distance of the part cycle
             for j in range(len(temp) - 1):
                 part_cycle_distance += distances[temp[j], temp[j + 1]]
-                print(part_cycle_distance)
             # Check E' < E
             # print(part_cycle_distance, v, P_M)
-            if (part_cycle_distance / v) * P_M > E_M: 
-                return False
-        return True
+            if ((part_cycle_distance / v) * P_M) > E_M: 
+                return True
+        return False
         
 
 

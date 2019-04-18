@@ -23,7 +23,7 @@ def main():
     Main , load data and call Class WRSN solve problem
     """
 
-    _path = '/home/thangnd/git/python_workspace/geneticalgorithms/datatsp/'
+    _path = '/home/thangnd/git/python/genetic_algorithm/datatsp/'
 
     with open(_path+'my_situation2.txt', 'r') as _file:
         data = {}
@@ -42,8 +42,8 @@ def main():
             c_1 = 0.5,
             c_2 = 0.5,
             data = data,
-            sensor_info=sensor_info,)
-    # s.solve()
+            sensor_info = sensor_info,)
+    s.solve()
 
 if __name__ == "__main__":
     main()
