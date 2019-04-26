@@ -65,8 +65,9 @@ class WRSN(object):
         Return 2 children
         """
         # Calculate p and q
-        p = 1
-        q = 5
+        _rand = np.random.randint(1, individual_a.cycle_length-1, 2)
+        p = min(_rand)
+        q = max(_rand)
 
         cycle_a = individual_a.cycle[q+1:] + individual_a.cycle[0:q+1]
         cycle_b = individual_b.cycle[q+1:] + individual_b.cycle[0:q+1]
@@ -196,12 +197,12 @@ class Mutation():
         """
         """
         for indv in self.population.individuals:
-            A = self.multiply_c_and_speed(self.c_1,
-                            self.subtract_positions(self.population.population_best_individual.cycle,
-                                                    indv.cycle))
-            B = self.multiply_c_and_speed(self.c_2,
-                                self.subtract_positions(self.population.global_best_individual.cycle,
+            if np.random.rand() < 0.1:
+                A = self.multiply_c_and_speed(self.c_1,
+                                self.subtract_positions(self.population.population_best_individual.cycle,
                                                         indv.cycle))
-            V_r = self.add_speed_and_speed(A, B)
-            indv.cycle = self.add_position_and_speed(indv.cycle, V_r)
-        print('mution done')
+                B = self.multiply_c_and_speed(self.c_2,
+                                    self.subtract_positions(self.population.global_best_individual.cycle,
+                                                            indv.cycle))
+                V_r = self.add_speed_and_speed(A, B)
+                indv.cycle = self.add_position_and_speed(indv.cycle, V_r)

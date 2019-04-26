@@ -22,7 +22,6 @@ def main():
     """
     Main , load data and call Class WRSN solve problem
     """
-
     _path = '/home/thangnd/git/python/genetic_algorithm/datatsp/'
 
     with open(_path+'my_situation2.txt', 'r') as _file:

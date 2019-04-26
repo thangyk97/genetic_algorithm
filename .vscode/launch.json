@@ -10,7 +10,8 @@
             "name": "Python: Current File (Integrated Terminal)",
             "type": "python",
             "request": "launch",
-            "program": "/home/thangnd/git/python/genetic_algorithm/wrsn/main.py",
+            // "program": "/home/thangnd/git/python/genetic_algorithm/wrsn/main.py",
+            "program": "${file}",
             "console": "integratedTerminal"
         },
         {
