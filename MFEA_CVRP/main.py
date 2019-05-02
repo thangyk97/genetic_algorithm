@@ -21,7 +21,7 @@ def load_data(file_names, path):
 
 def main():
     file_names = ['ch130.txt', 'a280.txt', 'berlin52.txt']
-    path = '/home/thangnd/git/python/genetic_algorithm/datatsp/'
+    path = 'D:/thangnd/git/genetic_algorithm/datatsp/'
 
     distances = load_data(file_names, path)
     s = MFEA(distances, 100)
