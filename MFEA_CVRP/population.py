@@ -18,7 +18,7 @@ class Population(object):
     def calculate_routes_distances(self, distances_matrix):
         """Calculate fitness of each individual"""
         for indiv in self.individuals:
-            _ = indiv.get_routes_distances(distances_matrix)
+            indiv.cal_routes_distances(distances_matrix)
         self.num_task = len(distances_matrix)
 
     def calculate_scalar_fitness_and_skill_factor(self):

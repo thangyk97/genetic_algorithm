@@ -39,7 +39,7 @@ class MFEA(object):
         individual_a = copy.deepcopy(indiv_a)
         individual_b = copy.deepcopy(indiv_b)
 
-        points = random.sample(range(1, individual_a.len_of_routes), 2)
+        points = random.sample(range(1, individual_a.len_of_routes - 1), 2)
         first_point = points[0] if points[0] < points[1] else points[1]
         second_point = points[0] if points[0] >= points[1] else points[1]
         routes_a = individual_a.routes.copy()
@@ -80,7 +80,7 @@ class MFEA(object):
 
     def evaluate_offspring(self):
         for idv in self.offspring:
-            _ = idv.get_routes_distances_4_specific_task(self.distances_matrix, idv.skill_factor)
+            idv.cal_routes_distances_4_specific_task(self.distances_matrix[idv.skill_factor], idv.skill_factor)
     
     def re_cal_scalar_fitness(self):
         for i in range(self.num_task):
