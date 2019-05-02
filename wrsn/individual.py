@@ -80,7 +80,7 @@ class Individual(object):
 
         self.get_fitness()
         temp = self.is_car_out_of_energy(distances, self.data['PM'],
-                                                        self.data['v'], self.data['EM'])
+                                                    self.data['v'], self.data['EM'])
 
         if self.fitness > 0 and not temp:
             return True

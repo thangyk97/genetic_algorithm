@@ -1,12 +1,12 @@
 import numpy as np
 import random
 import copy
-from Population import Population
+from population import Population
 
-class mfea4tsp(object):
+class MFEA(object):
     
     def __init__(self, distances_matrix, size_of_population):
-        super(mfea4tsp, self).__init__()
+        super(MFEA, self).__init__()
         self.distances_matrix   = distances_matrix
         self.num_task           = len(distances_matrix)
         self.size_of_population = size_of_population

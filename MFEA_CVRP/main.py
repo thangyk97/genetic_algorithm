@@ -1,5 +1,5 @@
 import numpy as np
-from mfea4tsp import mfea4tsp
+from mfea import MFEA
 
 
 def cal_distance_matrix_from_coordinate(coord):
@@ -24,7 +24,7 @@ def main():
     path = '/home/thangnd/git/python/genetic_algorithm/datatsp/'
 
     distances = load_data(file_names, path)
-    s = mfea4tsp(distances, 100)
+    s = MFEA(distances, 100)
     r = s.solve(100)
     
     for i, f in enumerate(file_names):
