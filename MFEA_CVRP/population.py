@@ -15,10 +15,10 @@ class Population(object):
         for _ in range(self.size_of_population):
             self.individuals.append(Individual(self.num_city))
 
-    def calculate_routes_distances(self, distances_matrix):
+    def calculate_routes_distances(self, distances_matrix, q, Q):
         """Calculate fitness of each individual"""
         for indiv in self.individuals:
-            indiv.cal_routes_distances(distances_matrix)
+            indiv.cal_routes_distances(distances_matrix, q, Q)
         self.num_task = len(distances_matrix)
 
     def calculate_scalar_fitness_and_skill_factor(self):

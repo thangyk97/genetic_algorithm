@@ -5,14 +5,16 @@ from population import Population
 
 class MFEA(object):
     
-    def __init__(self, distances_matrix, size_of_population):
+    def __init__(self, distances_matrix, size_of_population, q, Q):
         super(MFEA, self).__init__()
-        self.distances_matrix   = distances_matrix
-        self.num_task           = len(distances_matrix)
+        self.distances_matrix = distances_matrix
+        self.num_task = len(distances_matrix)
         self.size_of_population = size_of_population
-        self.offspring          = []
-        self.Rmp                = 0.2
-        self.Rm                 = 0.01
+        self.offspring = []
+        self.Rmp = 0.2
+        self.Rm = 0.01
+        self.q = q
+        self.Q = Q
 
     def generate_population(self):
         num_city = 0
@@ -22,7 +24,7 @@ class MFEA(object):
         self.population.generate_rd_population()
 
     def evaluate_population(self):
-        self.population.calculate_routes_distances(self.distances_matrix)
+        self.population.calculate_routes_distances(self.distances_matrix, self.q, self.Q)
 
     def cal_skill_factor(self):
         self.population.calculate_scalar_fitness_and_skill_factor()
@@ -73,14 +75,17 @@ class MFEA(object):
     def mutation(self):
         for i in range(self.size_of_population):
             if random.random() <= self.Rm:
-                points = random.sample(range(1, self.population.individuals[i].len_of_routes - 1), 2)
+                points = random.sample(range(1, self.population.individuals[i].len_of_routes - 2), 2)
                 temp = self.population.individuals[i].routes[points[0]]
                 self.population.individuals[i].routes[points[0]] = self.population.individuals[i].routes[points[1]]
                 self.population.individuals[i].routes[points[1]] = temp
 
     def evaluate_offspring(self):
         for idv in self.offspring:
-            idv.cal_routes_distances_4_specific_task(self.distances_matrix[idv.skill_factor], idv.skill_factor)
+            idv.cal_routes_distances_4_specific_task(self.distances_matrix[idv.skill_factor],
+                                                    idv.skill_factor,
+                                                    self.q[idv.skill_factor],
+                                                    self.Q[idv.skill_factor])
     
     def re_cal_scalar_fitness(self):
         for i in range(self.num_task):
@@ -122,4 +127,4 @@ class MFEA(object):
                     output[i] = idv
                     break
 
-        return [indv.distances[indv.skill_factor] for indv in output]
+        return output
