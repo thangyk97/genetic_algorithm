@@ -18,7 +18,8 @@ class Population(object):
                         in each cycle
     global_best_individual (Individual): 
     """
-    def __init__(self, num_sensor, num_come_back, size_of_population, data, sensor_info, distances):
+    def __init__(self, num_sensor, num_come_back,
+                size_of_population, data, sensor_info, distances):
         """
         Initial randomly individuals, they satify all constraints
         Parameters:
