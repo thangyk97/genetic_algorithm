@@ -12,6 +12,7 @@ class MFEA :
         self.population = Population(self.size, self.gens_len, self.data)
         self.population.initial_population()
         self.population.update_fitness()
+        self.population.rank_individual()
         it = 0
         while (it < self.maxIter):
             self.population.crossover()

@@ -7,6 +7,7 @@ class Individual:
         self.gens = []
         self.ranks = []
         self.fitness = 0.0
+        self.skill_factor = None
         self._random_initial()
 
     def _random_initial(self):
@@ -26,7 +27,7 @@ class Individual:
         return [0] + decode_routes + [0]
 
     def cal_fitness(self):
-        pass
+        self.fitness = 1 / (np.min(self.gens) + 1)
 
     def is_satified(self, data)->bool:
         for i, d in enumerate(data):
