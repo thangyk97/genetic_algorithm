@@ -114,7 +114,6 @@ class Individual(object):
             for j in range(len(temp) - 1):
                 part_cycle_distance += distances[temp[j], temp[j + 1]]
             # Check E' < E
-            # print(part_cycle_distance, v, P_M)
             if ((part_cycle_distance / v) * P_M) > E_M: 
                 return True
         return False

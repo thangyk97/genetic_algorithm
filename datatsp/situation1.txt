@@ -1,8 +1,12 @@
 nodes = 20
-WCE: EM = 6000 (J), v = 5 (m/s), U = 5 (W), PM = 1 (W)
-Emax = 10800, Emin = 540
-Location, p:
-0: 0 0
+EM = 6000 (J)
+v = 5 (m/s)
+U = 5 (W)
+PM = 1 (W)
+Emax = 10800
+Emin = 540
+Location
+0: 0 0 0
 1: 50 90 0.19
 2: 590 480 0.33
 3: 450 900 0.53
