@@ -6,16 +6,14 @@ class Individual:
         self.gens_len = gens_len
         self.gens = []
         self.ranks = []
-        self.fitness = 0.0
+        self.fitness = []
+        self.scalar_fitness = 0.0
         self.skill_factor = None
         self._random_initial()
 
     def _random_initial(self):
         temp = np.random.permutation(range(1, self.gens_len + 1))
         self.gens = temp.tolist()
-
-    def encode(self):
-        pass
 
     def decode(self, d, i)->list:
         remove = list(range(d['num_nodes'] + 2, self.gens_len + 1))
@@ -26,8 +24,23 @@ class Individual:
         decode_routes[decode_routes.index(d['num_nodes'] + 1)] = 0
         return [0] + decode_routes + [0]
 
-    def cal_fitness(self):
-        self.fitness = 1 / (np.min(self.gens) + 1)
+    def cal_scalar_fitness(self):
+        temp = [i for i, x in enumerate(self.ranks) if x == np.min(self.ranks)]
+        self.skill_factor = temp[np.random.randint(0, temp.__len__())]
+        self.scalar_fitness = 1 / (np.min(self.ranks) + 1)
+
+    def cal_fitness(self, data):
+        self.fitness = []
+        for i, d in enumerate(data):
+            self.fitness.append(self.get_fitness(d, i))
+
+    def get_fitness(self, d, i)->float:
+        decode_gens = self.decode(d, i)
+        T = calculate_T(d)
+        distance = get_distance(d, decode_gens)
+        sum_to_i = get_sum_to_i(d, T)
+        t_vac = T - sum_to_i - distance / d['v']
+        return t_vac / T
 
     def is_satified(self, data)->bool:
         for i, d in enumerate(data):

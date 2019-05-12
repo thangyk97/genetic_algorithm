@@ -24,7 +24,7 @@ def main():
     """
     _path = '/home/thangnd/git/python/genetic_algorithm/datatsp/'
 
-    with open(_path+'my_situation2.txt', 'r') as _file:
+    with open(_path+'my_situation1.txt', 'r') as _file:
         data = {}
         data['num_node'] = int(_file.readline())
         data['EM'] = int(_file.readline())
@@ -43,6 +43,7 @@ def main():
             data = data,
             sensor_info = sensor_info,)
     s.solve()
+    print("")
 
 if __name__ == "__main__":
     main()
