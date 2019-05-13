@@ -6,8 +6,8 @@ from mfea import MFEA
 if __name__ == "__main__":
     # Load data
     path = os.getcwd()
-    data_1 = read_data_wrsn(path + "/datatsp/situation1.txt")
-    data_2 = read_data_wrsn(path + "/datatsp/situation2.txt")
+    data_1 = read_data_wrsn(path + "/../datatsp/situation1.txt")
+    data_2 = read_data_wrsn(path + "/../datatsp/situation2.txt")
     data_1['distances'] = calculate_distances(data_1['cordination'])
     data_2['distances'] = calculate_distances(data_2['cordination'])
     data = [data_1, data_2]

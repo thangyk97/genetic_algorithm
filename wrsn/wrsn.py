@@ -145,7 +145,7 @@ class WRSN(object):
         self.evolution(maxIter)
         idx = self.population.get_highest_fitness_index()
         best = self.population.individuals[idx]
-        print(best)
+        print(best.fitness)
 
 class Mutation():
     def __init__(self, c_1, c_2, population):

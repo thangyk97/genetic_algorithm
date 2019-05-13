@@ -6,6 +6,7 @@
 
 from wrsn import WRSN
 import numpy as np
+import os
 
 def cal_distance_matrix_from_coordinate(coord):
     """
@@ -22,9 +23,9 @@ def main():
     """
     Main , load data and call Class WRSN solve problem
     """
-    _path = '/home/thangnd/git/python/genetic_algorithm/datatsp/'
+    path = os.getcwd()
 
-    with open(_path+'my_situation1.txt', 'r') as _file:
+    with open(path + "/../datatsp/my_situation2.txt", 'r') as _file:
         data = {}
         data['num_node'] = int(_file.readline())
         data['EM'] = int(_file.readline())
