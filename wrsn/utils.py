@@ -80,11 +80,12 @@ def get_max_needed_energy(data, gens)->float:
     service_station_index = [i for i, v in enumerate(gens) if v == 0]
     # Loop per each part cycle, if car is out of energy in the part cycle, return True
     for i in range(len(service_station_index)-1):
-        temp = gens[service_station_index[i]: service_station_index[i+1]]
+        temp = gens[service_station_index[i]: service_station_index[i+1] + 1]
         part_cycle_distance = 0.0
         # Calculate distance of the part cycle
         for j in range(len(temp) - 1):
             part_cycle_distance += data['distances'][temp[j], temp[j + 1]]
+        
         # Check E' < E
         if ((part_cycle_distance / data['v']) * data['PM']) > _max: 
             _max = ((part_cycle_distance / data['v']) * data['PM'])
