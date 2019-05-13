@@ -19,7 +19,7 @@ if __name__ == "__main__":
             max_num_nodes = d['num_nodes']
     num_come_back = 1
 
-    s = MFEA(data=data, maxIter=100, size=100, gens_len=max_num_nodes + num_come_back)
+    s = MFEA(data=data, maxIter=100, size=100, gens_len=max_num_nodes)
     s.solver()
     s.get_result()
     print("asdf")
