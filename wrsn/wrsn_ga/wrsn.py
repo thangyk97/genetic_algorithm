@@ -26,5 +26,5 @@ class WRSN :
     
     def log_state(self, it):
         print("---------------------------------------------------------------------------------------------------------------")
-        print("Generation : ", it)
+        print("Generation : ", it + 1)
         print("Best fitness: ", self.get_result().fitness)

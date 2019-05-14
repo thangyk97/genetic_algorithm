@@ -1,5 +1,10 @@
+# import os
+# import sys
+# currentdir = os.path.dirname(os.path.realpath(__file__))
+# parentdir = os.path.dirname(currentdir)
+# sys.path.append(parentdir)
 import numpy as np
-from utils import calculate_T, get_distance, get_max_needed_energy, get_sum_to_i, decode
+from utils import calculate_T, get_distance, get_max_needed_energy, get_sum_to_i, decode, calculate_distances
 
 class Individual:
     def __init__(self, gens_len):
@@ -43,8 +48,6 @@ class Individual:
 
 
 if __name__ == "__main__":
-    from utils import *
-
     d = {}
     d['v'] = 1
     d['EM'] = 13

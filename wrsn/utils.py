@@ -1,4 +1,5 @@
 import numpy as np
+import sys, getopt
 
 def read_file_c_huong(s)->list:
     x = np.loadtxt(s)
@@ -128,6 +129,25 @@ def decode(d, gens)->list:
         if i >= (cycle.__len__() - 2):
             break
     return cycle
+
+def read_cli_argv(argv):
+    blah = 'Run with :\n python main.py -i <maxIter> -s <population size> data_file.txt'
+    try:
+        opts, args = getopt.getopt(argv,"hi:s:")
+    except getopt.GetoptError:
+        print (blah)
+        sys.exit(2)
+    maxIter = 1000
+    size = 100
+    for opt, arg in opts:
+        if opt == '-h':
+            print (blah)
+            sys.exit()
+        elif opt == '-i':
+            maxIter = arg
+        elif opt == '-s':
+            size = arg
+    return int(maxIter), int(size), args
 
 if __name__ == "__main__":
     """Test functions"""
