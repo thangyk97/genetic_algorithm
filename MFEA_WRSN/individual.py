@@ -16,7 +16,7 @@ class Individual:
         self.gens = temp.tolist()
 
     def decode(self, d, i)->list:
-        remove = list(range(d['num_nodes'] + 2, self.gens_len + 1))
+        remove = list(range(d['num_nodes'] + 1, self.gens_len + 1))
         decode_routes = self.gens.copy()
         for r in remove:
             decode_routes.remove(r)

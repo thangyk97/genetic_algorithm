@@ -29,8 +29,9 @@ class Individual:
         distance = get_distance(d, decode_gens)
         max_needed_energey = get_max_needed_energy(d, decode_gens)
         sum_to_i = get_sum_to_i(d, T)
+        t_tsp = distance / d['v']
         # t_vac > 0
-        if (T - sum_to_i - distance / d['v'] < 0):
+        if (T - sum_to_i - t_tsp < 0):
             return False
         # check out of energy
         if (max_needed_energey > d['EM']):

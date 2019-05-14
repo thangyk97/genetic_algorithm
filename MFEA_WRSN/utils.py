@@ -1,9 +1,13 @@
 import numpy as np
 
-def read_data_wrsn(s)->dict:
+def read_file_c_huong(s)->list:
+    x = np.loadtxt(s)
+    return x[:, :2].tolist(), x[:, 2].tolist()
+
+def read_data_wrsn(s, s2)->dict:
     with open(s, 'r') as file:
-        # Number of nodes
-        num_nodes = int(get_number_of(file.readline())[0])
+        # # Number of nodes
+        # num_nodes = int(get_number_of(file.readline())[0])
         # EM
         EM = get_number_of(file.readline())[0]
         # v
@@ -16,18 +20,23 @@ def read_data_wrsn(s)->dict:
         Emax = get_number_of(file.readline())[0]
         # Emin
         Emin = get_number_of(file.readline())[0]
-        # Cordination and p[i]
-        file.readline()
-        p_information = []
-        for _ in range(num_nodes + 1):
-            p_information.append(get_number_of(file.readline()))
-        cordination = [c[0:-1] for c in p_information]
-        p = [c[-1] for c in p_information]
-        # Hamilton cycle
-        hamilton_cycle = [int(c) for c in file.readline().split() if c.isdigit()]
-        # length
-        length = get_number_of(file.readline())[0]
-
+        # # Cordination and p[i]
+        # file.readline()
+        # p_information = []
+        # for _ in range(num_nodes + 1):
+        #     p_information.append(get_number_of(file.readline()))
+        # cordination = [c[0:-1] for c in p_information]
+        # p = [c[-1] for c in p_information]
+        # # Hamilton cycle
+        # hamilton_cycle = [int(c) for c in file.readline().split() if c.isdigit()]
+        # # length
+        # length = get_number_of(file.readline())[0]
+    ############
+    cordination, p = read_file_c_huong(s2)
+    cordination.insert(0, [0.0, 0.0])
+    p.insert(0, 0.0)
+    num_nodes = p.__len__() - 1
+    #############
     return {
         'num_nodes': num_nodes,
         'EM': EM,
@@ -38,8 +47,8 @@ def read_data_wrsn(s)->dict:
         'Emin': Emin,
         'cordination': cordination,
         'p': p,
-        'hamilton_cycle': hamilton_cycle,
-        'length': length,
+        # 'hamilton_cycle': hamilton_cycle,
+        # 'length': length,
     }
 
 def get_number_of(s)->list:
@@ -80,11 +89,12 @@ def get_max_needed_energy(data, gens)->float:
     service_station_index = [i for i, v in enumerate(gens) if v == 0]
     # Loop per each part cycle, if car is out of energy in the part cycle, return True
     for i in range(len(service_station_index)-1):
-        temp = gens[service_station_index[i]: service_station_index[i+1]]
+        temp = gens[service_station_index[i]: service_station_index[i+1] + 1]
         part_cycle_distance = 0.0
         # Calculate distance of the part cycle
         for j in range(len(temp) - 1):
             part_cycle_distance += data['distances'][temp[j], temp[j + 1]]
+        
         # Check E' < E
         if ((part_cycle_distance / data['v']) * data['PM']) > _max: 
             _max = ((part_cycle_distance / data['v']) * data['PM'])
@@ -122,7 +132,7 @@ def decode(d, gens)->list:
 if __name__ == "__main__":
     """Test functions"""
     import os
-    d = read_data_wrsn(os.getcwd() + "/../datatsp/situation1.txt")
-    print(calculate_T(d))
+    d = read_data_wrsn(os.getcwd() + "/../datatsp/situation1.txt",
+                       os.getcwd() + "/../datatsp/u20.txt")
     # m = calculate_distances([[1,1], [0,0]])
     # print(m)

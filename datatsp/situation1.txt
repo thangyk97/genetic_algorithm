@@ -1,7 +1,7 @@
 nodes = 20
 EM = 1000 (J)
 v = 5 (m/s)
-U = 5 (W)
+U = 10 (W)
 PM = 1 (W)
 Emax = 10800
 Emin = 540

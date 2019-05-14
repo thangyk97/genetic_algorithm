@@ -6,7 +6,7 @@ from wrsn import WRSN
 if __name__ == "__main__":
     # Load data
     path = os.getcwd()
-    data = read_data_wrsn(path + "/../datatsp/situation1.txt")
+    data = read_data_wrsn(path + "/datatsp/infor_cm.txt", path + "/datatsp/u40.txt")
     data['distances'] = calculate_distances(data['cordination'])
 
     s = WRSN(data=data, maxIter=1000, size=100)
