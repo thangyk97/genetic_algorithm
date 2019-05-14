@@ -1,5 +1,5 @@
 import numpy as np
-from utils import calculate_T, get_distance, get_max_needed_energy, get_sum_to_i
+from utils import calculate_T, get_distance, get_max_needed_energy, get_sum_to_i, decode
 
 class Individual:
     def __init__(self, gens_len):
@@ -21,8 +21,8 @@ class Individual:
         for r in remove:
             decode_routes.remove(r)
         #
-        decode_routes[decode_routes.index(d['num_nodes'] + 1)] = 0
-        return [0] + decode_routes + [0]
+        # decode_routes[decode_routes.index(d['num_nodes'] + 1)] = 0
+        return decode(d, decode_routes)
 
     def cal_scalar_fitness(self):
         temp = [i for i, x in enumerate(self.ranks) if x == np.min(self.ranks)]
