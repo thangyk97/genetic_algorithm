@@ -43,6 +43,9 @@ class Individual:
             return False
         return True
 
+    def decode(self, d, i)->list:
+        return decode(d, self.gens)
+
     def get_gens(self)->list:
         return self.gens
 

@@ -131,14 +131,15 @@ def decode(d, gens)->list:
     return cycle
 
 def read_cli_argv(argv):
-    blah = 'Run with :\n python main.py -i <maxIter> -s <population size> data_file.txt'
+    blah = 'Run with :\n python main.py -n <num running> -i <maxIter> -s <population size> data_file.txt'
     try:
-        opts, args = getopt.getopt(argv,"hi:s:")
+        opts, args = getopt.getopt(argv,"hn:i:s:")
     except getopt.GetoptError:
         print (blah)
         sys.exit(2)
     maxIter = 1000
     size = 100
+    n = 1
     for opt, arg in opts:
         if opt == '-h':
             print (blah)
@@ -147,7 +148,43 @@ def read_cli_argv(argv):
             maxIter = arg
         elif opt == '-s':
             size = arg
-    return int(maxIter), int(size), args
+        elif opt == '-n':
+            n = arg
+    return int(n), int(maxIter), int(size), args
+
+def write_output(path, data_file, results, times, data):
+    with open(path, 'w'):
+        pass
+
+    fitness_arr = []
+    for r in results:
+        temp = []
+        for t in r:
+            _fitness = t.fitness[t.skill_factor] if isinstance(t.fitness, list) else t.fitness
+            temp.append(_fitness)
+        fitness_arr.append(temp)
+    fitness_arr = np.array(fitness_arr)
+    with open(path, 'a') as out:
+        out.writelines("Summarization: \n")
+        out.writelines("Time average: "+ str(np.mean(times)) +"\n")
+        for i, v in enumerate(data_file):
+            out.writelines("------------------------------------------------------------\n")
+            out.writelines("Task: " + v + "\n")
+            out.writelines("Fitness: \n")
+            out.writelines("\tmax: " + str(np.max(fitness_arr[:, i])) + "\n")
+            out.writelines("\taverage: " + str(np.mean(fitness_arr[:, i])) + "\n")
+            out.writelines("\tmin: " + str(np.min(fitness_arr[:, i])) + "\n")
+    
+    with open(path, 'a') as out:
+        for i, v in enumerate(results):
+            out.writelines("\n\n*********************** Time " + str(i) +" *******************************\n")
+            # out.writelines("Time " + str(i) + "\n")
+            for j, t in enumerate(data_file):
+                out.writelines("--------------------------------------------------------------\n")
+                out.writelines("Task: " + t + "\n")
+                _fitness = v[j].fitness[v[j].skill_factor] if isinstance(v[j].fitness, list) else v[j].fitness
+                out.writelines("Fitness: " + str(_fitness) + "\n")
+                out.writelines("Cycle: " + str(v[j].decode(data[j], j)) + "\n")
 
 if __name__ == "__main__":
     """Test functions"""
