@@ -74,7 +74,7 @@ def calculate_T(data)->float:
     T = float('inf')
     for pi in data['p']:
         if pi != 0:
-            temp = (data['Emax'] - data['Emin']) / (pi)
+            temp = (data['Emax'] - data['Emin']) / (pi) + (data['Emax'] - data['Emin']) / (data['U'] - pi)
             if temp < T:
                 T = temp
     return T
